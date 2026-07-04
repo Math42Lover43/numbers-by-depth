@@ -64,9 +64,9 @@
         setInterval(function() {
             if(complete) {
                 complete = false;
-                n++;
+                n += 2n;
                 while(mod_pow(2n, n - 1n, n) != 1n) {
-                    n++;
+                    n += 2n;
                 }
                 if(mod_pow(10n, 576000000n, n) == 1n) {
                     add(n, 0);
