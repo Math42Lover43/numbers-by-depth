@@ -53,8 +53,8 @@
     	}
         var n = 1n;
         var taxo = [[9n, 27n, 81n, 243n, 729n]];
-        function(add, ind) {
-            taxo[ind].push(add);
+        function add(num, ind) {
+            taxo[ind].push(num);
             if(taxo.length == ind + 1) {
                 taxo.push([]);
             }
