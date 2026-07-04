@@ -64,6 +64,7 @@
         setInterval(function() {
             if(complete) {
                 complete = false;
+                n++;
                 while(mod_pow(2n, n - 1n, n) != 1n) {
                     n++;
                 }
