@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <style>
+            body {
+                font-family: monospace;
+            }
+        </style>
+    </head>
+    <body id="disp">
+        
+    </body>
+    <script>
+    	function baseconv(val,base,mult,minimize) {
+    		base = BigInt(base);
+    		var number = val;
+    		var list = [val];
+    		var mult = mult ? mult : 1n;
+    		while(list[list.length - 1] != 0n) {
+    			list.push(list[list.length - 1] / BigInt(base));
+    			list[list.length - 2] = list[list.length - 2] % BigInt(base);
+    		}
+    		if(minimize) {
+    			for(let term = 0; term < list.length; term++) {
+    				if(list[term] > base / 2n) {
+    					list[term] -= base;
+    					list[term + 1] += 1n;
+    				}
+    			}
+    			if(list[list.length - 1] != 0n) {
+    				list.push(0n);
+    			}
+    		}
+    		for(let term = 0; term < list.length; term++) {
+    			list[term] *= mult ** BigInt(term);
+    		}
+    		return list;
+    	}
+        function mod_pow(b,p,m) {
+    	    var c = 1n;
+    	    var l = baseconv(p,2n).reverse();
+    	    for(let i = 0n; i < l.length; i++) {
+    	        if(l[i] == 1n) {
+    	            c *= b;
+    	        }
+    	        c %= m;
+    	        if(l[i + 1n] != undefined) {
+    	            c **= 2n;
+    	        }
+    	    }
+    	    return c;
+    	}
+        var n = 1n;
+        var taxo = [[9n, 27n, 81n, 243n, 729n]];
+        function(add, ind) {
+            taxo[ind].push(add);
+            if(taxo.length == ind + 1) {
+                taxo.push([]);
+            }
+        }
+        var complete = true;
+        var rain;
+        setInterval(function() {
+            if(complete) {
+                complete = false;
+                while(mod_pow(2n, n - 1n, n) != 1n) {
+                    n++;
+                }
+                if(mod_pow(10n, 576000000n, n) == 1n) {
+                    add(n, 0);
+                } else {
+                    rain = taxo.length;
+                    inspect: while(rain > 0) {
+                        rain--;
+                        for(let i = 0; i < taxo[rain].length; i++) {
+                            if(n % taxo[rain][i] == 1n) {
+                                add(n, rain + 1);
+                                break inspect;
+                            }
+                        }
+                    }
+                }
+                complete = true;
+            }
+        })
+        setInterval(function() {
+            document.getElementById("disp").innerHTML = "";
+            for(let j = 0; j < taxo.length; j++) {
+                document.getElementById("disp").innerHTML += `${j}.&#9;${taxo[j]}<br/>`
+            }
+        }, 10000)
+    </script>
+</html>
